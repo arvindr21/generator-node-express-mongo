@@ -30,8 +30,9 @@ var socketio = require('socket.io')(server, {
 });
 require('./config/socketio')(socketio);<% } %>
 require('./config/express')(app);
-require('./routes')(app);
-
+require('./routes')(app);<% if (filters.mqtt) { %>
+require('./mqtt');
+<% } %>
 // Start server
 server.listen(config.port, config.ip, function () {
   console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));

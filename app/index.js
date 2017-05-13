@@ -67,55 +67,58 @@ var MEMNGenerator = yeoman.generators.Base.extend({
         this.log('\n# Server\n');
 
         this.prompt([{
-            type: "confirm",
-            name: "mongoose",
-            message: "Would you like to use mongoDB with Mongoose for data modeling?"
-        }, {
-            type: "confirm",
-            name: "auth",
-            message: "Would you scaffold out an authentication boilerplate?",
-            when: function(answers) {
-                return answers.mongoose;
+                type: "confirm",
+                name: "mongoose",
+                message: "Would you like to use mongoDB with Mongoose for data modeling?"
+            }, {
+                type: "confirm",
+                name: "auth",
+                message: "Would you scaffold out an authentication boilerplate?",
+                when: function(answers) {
+                    return answers.mongoose;
+                }
+            },
+            // {
+            //     type: 'checkbox',
+            //     name: 'oauth',
+            //     message: 'Would you like to include additional oAuth strategies?',
+            //     when: function(answers) {
+            //         return answers.auth;
+            //     },
+            //     choices: [{
+            //         value: 'googleAuth',
+            //         name: 'Google',
+            //         checked: false
+            //     }, {
+            //         value: 'facebookAuth',
+            //         name: 'Facebook',
+            //         checked: false
+            //     }, {
+            //         value: 'twitterAuth',
+            //         name: 'Twitter',
+            //         checked: false
+            //     }]
+            // },
+            {
+                type: "confirm",
+                name: "socketio",
+                message: "Would you like to use socket.io?",
+                // to-do: should not be dependent on mongoose
+                when: function(answers) {
+                    return answers.mongoose;
+                },
+                default: true
+            }, {
+                type: "confirm",
+                name: "mqtt",
+                message: "Would you like to include MQTT (client) [mqtt.js]?",
+                // to-do: should not be dependent on mongoose
+                when: function(answers) {
+                    return answers.mongoose;
+                },
+                default: true
             }
-        }, {
-            type: 'checkbox',
-            name: 'oauth',
-            message: 'Would you like to include additional oAuth strategies?',
-            when: function(answers) {
-                return answers.auth;
-            },
-            choices: [{
-                value: 'googleAuth',
-                name: 'Google',
-                checked: false
-            }, {
-                value: 'facebookAuth',
-                name: 'Facebook',
-                checked: false
-            }, {
-                value: 'twitterAuth',
-                name: 'Twitter',
-                checked: false
-            }]
-        }, {
-            type: "confirm",
-            name: "socketio",
-            message: "Would you like to use socket.io?",
-            // to-do: should not be dependent on mongoose
-            when: function(answers) {
-                return answers.mongoose;
-            },
-            default: true
-        }, {
-            type: "confirm",
-            name: "mqtt",
-            message: "Would you like to include MQTT (client) [mqtt.js]?",
-            // to-do: should not be dependent on mongoose
-            when: function(answers) {
-                return answers.mongoose;
-            },
-            default: true
-        }], function(answers) {
+        ], function(answers) {
             if (answers.socketio) this.filters.socketio = true;
             if (answers.mqtt) this.filters.mqtt = true;
             if (answers.mongoose) this.filters.mongoose = true;
@@ -161,7 +164,8 @@ var MEMNGenerator = yeoman.generators.Base.extend({
 
     end: function() {
         this.installDependencies({
-            skipInstall: this.options['skip-install']
+            skipInstall: this.options['skip-install'],
+            bower: false
         });
     }
 });
